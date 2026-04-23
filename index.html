@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interim Facilities Director — First 30 Days</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --stone-50: #fafaf9;
+  --stone-100: #f5f5f4;
+  --stone-200: #e7e5e4;
+  --stone-300: #d6d3d1;
+  --stone-400: #a8a29e;
+  --stone-500: #78716c;
+  --stone-600: #57534e;
+  --stone-700: #44403c;
+  --stone-800: #292524;
+  --stone-900: #1c1917;
+  --amber-500: #f59e0b;
+  --amber-600: #d97706;
+  --amber-700: #b45309;
+  --slate-700: #334155;
+  --accent: #b45309;
+  --accent-light: #fef3c7;
+  --accent-mid: #fde68a;
+  --bg: #fafaf9;
+  --card-bg: #ffffff;
+  --text: #292524;
+  --text-secondary: #57534e;
+  --border: #e7e5e4;
+  --radius: 10px;
+  --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 6px rgba(0,0,0,0.05), 0 2px 4px rgba(0,0,0,0.03);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { font-size: 16px; scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.65;
+  padding-bottom: 4rem;
+}
+
+/* ── Sticky Header ── */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--stone-800);
+  color: #fff;
+  padding: 0.75rem 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+.site-header h1 {
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.site-header .subtitle {
+  font-size: 0.75rem;
+  color: var(--stone-400);
+  font-weight: 400;
+}
+
+/* ── Progress Bar ── */
+.progress-wrap {
+  background: var(--stone-700);
+  height: 4px;
+  width: 100%;
+  margin-top: 0.5rem;
+  border-radius: 2px;
+  overflow: hidden;
+}
+.progress-bar {
+  height: 100%;
+  background: var(--amber-500);
+  width: 0%;
+  transition: width 0.3s ease;
+  border-radius: 2px;
+}
+.progress-label {
+  font-size: 0.65rem;
+  color: var(--stone-400);
+  margin-top: 0.2rem;
+  text-align: right;
+}
+
+/* ── Main Content ── */
+.container {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+/* ── Governing Principle Banner ── */
+.principle-banner {
+  background: linear-gradient(135deg, var(--stone-800), var(--stone-700));
+  color: #fff;
+  padding: 1.25rem 1.25rem;
+  border-radius: var(--radius);
+  margin: 1rem 0 1.5rem;
+  box-shadow: var(--shadow-md);
+}
+.principle-banner h2 {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--amber-500);
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+.principle-banner .hierarchy {
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.5;
+  color: #fff;
+}
+.principle-banner .hierarchy span {
+  color: var(--amber-500);
+}
+.principle-banner p {
+  font-size: 0.85rem;
+  color: var(--stone-300);
+  margin-top: 0.75rem;
+  line-height: 1.55;
+}
+
+/* ── Sections (collapsible) ── */
+.section {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: 0.75rem;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+.section summary {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 1rem 1.25rem;
+  cursor: pointer;
+  list-style: none;
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--text);
+  user-select: none;
+  -webkit-user-select: none;
+  transition: background 0.15s;
+}
+.section summary::-webkit-details-marker { display: none; }
+.section summary::before {
+  content: '';
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid var(--stone-500);
+  border-bottom: 2px solid var(--stone-500);
+  transform: rotate(-45deg);
+  transition: transform 0.2s;
+  flex-shrink: 0;
+}
+.section[open] > summary::before {
+  transform: rotate(45deg);
+}
+.section summary:hover {
+  background: var(--stone-50);
+}
+.section summary .badge {
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 0.15rem 0.5rem;
+  border-radius: 99px;
+  background: var(--accent-light);
+  color: var(--accent);
+  margin-left: auto;
+  flex-shrink: 0;
+}
+.section-body {
+  padding: 0 1.25rem 1.25rem;
+}
+
+/* ── Sub-sections ── */
+.subsection {
+  margin-top: 1.25rem;
+}
+.subsection:first-child { margin-top: 0.25rem; }
+.subsection h3 {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--stone-700);
+  margin-bottom: 0.6rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 1px solid var(--border);
+}
+.subsection h4 {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--accent);
+  margin: 1rem 0 0.4rem;
+}
+.subsection p, .subsection li {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+.subsection > p { margin-bottom: 0.6rem; }
+.subsection ul, .subsection ol {
+  padding-left: 1.25rem;
+  margin-bottom: 0.6rem;
+}
+.subsection li { margin-bottom: 0.3rem; }
+
+/* ── Checklist Items ── */
+.checklist {
+  list-style: none;
+  padding-left: 0;
+}
+.checklist li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--stone-100);
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+.checklist li:last-child { border-bottom: none; }
+.checklist input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  min-width: 20px;
+  border: 2px solid var(--stone-300);
+  border-radius: 4px;
+  margin-top: 1px;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.15s;
+  background: #fff;
+}
+.checklist input[type="checkbox"]:checked {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+.checklist input[type="checkbox"]:checked::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 5px;
+  width: 5px;
+  height: 10px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+.checklist li.checked > span {
+  text-decoration: line-through;
+  color: var(--stone-400);
+}
+
+/* ── Interview Blocks ── */
+.interview-block {
+  background: var(--stone-50);
+  border-left: 3px solid var(--accent);
+  padding: 0.8rem 1rem;
+  border-radius: 0 6px 6px 0;
+  margin: 0.75rem 0;
+}
+.interview-block .role {
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--stone-700);
+  margin-bottom: 0.35rem;
+}
+.interview-block ul {
+  list-style: none;
+  padding-left: 0;
+}
+.interview-block li {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  padding: 0.2rem 0;
+  line-height: 1.5;
+}
+.interview-block li::before {
+  content: '\201C';
+  color: var(--accent);
+  font-weight: 700;
+  margin-right: 0.15rem;
+}
+.interview-block .note {
+  font-size: 0.82rem;
+  font-style: italic;
+  color: var(--stone-500);
+  margin-top: 0.35rem;
+}
+
+/* ── Tables ── */
+.table-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 0.75rem 0;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.82rem;
+  min-width: 400px;
+}
+th {
+  background: var(--stone-100);
+  font-weight: 600;
+  color: var(--stone-700);
+  text-align: left;
+  padding: 0.6rem 0.75rem;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+td {
+  padding: 0.55rem 0.75rem;
+  border-top: 1px solid var(--border);
+  color: var(--text-secondary);
+}
+tbody tr:hover { background: var(--stone-50); }
+
+/* ── Callout Boxes ── */
+.callout {
+  background: var(--accent-light);
+  border-left: 3px solid var(--accent);
+  padding: 0.75rem 1rem;
+  border-radius: 0 6px 6px 0;
+  margin: 0.75rem 0;
+  font-size: 0.85rem;
+  color: var(--stone-700);
+  line-height: 1.55;
+}
+.callout strong { color: var(--accent); }
+
+/* ── Flint Questions ── */
+.questions-list {
+  counter-reset: q;
+  list-style: none;
+  padding-left: 0;
+}
+.questions-list li {
+  counter-increment: q;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--stone-100);
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.55;
+}
+.questions-list li:last-child { border-bottom: none; }
+.questions-list li::before {
+  content: counter(q);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  min-width: 24px;
+  background: var(--stone-200);
+  color: var(--stone-600);
+  font-weight: 600;
+  font-size: 0.75rem;
+  border-radius: 50%;
+  margin-top: 1px;
+}
+
+/* ── Key Principles ── */
+.principle-item {
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--stone-100);
+}
+.principle-item:last-child { border-bottom: none; }
+.principle-item strong {
+  display: block;
+  font-size: 0.88rem;
+  color: var(--stone-800);
+  margin-bottom: 0.15rem;
+}
+.principle-item p {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+/* ── Footer ── */
+.site-footer {
+  text-align: center;
+  padding: 2rem 1rem 1rem;
+  font-size: 0.75rem;
+  color: var(--stone-400);
+}
+.site-footer .credit {
+  margin-top: 0.25rem;
+  color: var(--stone-300);
+}
+
+/* ── Expand/Collapse All ── */
+.controls {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+  margin-bottom: 0.5rem;
+}
+.controls button {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--stone-500);
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  padding: 0.35rem 0.75rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.controls button:hover {
+  color: var(--stone-700);
+  border-color: var(--stone-300);
+}
+
+/* ── Print ── */
+@media print {
+  .site-header { position: static; background: none; color: #000; box-shadow: none; padding: 0 0 0.5rem; border-bottom: 2px solid #000; }
+  .site-header .subtitle { color: #666; }
+  .progress-wrap, .progress-label, .controls { display: none; }
+  .principle-banner { background: #f5f5f5 !important; color: #000 !important; box-shadow: none; border: 1px solid #ccc; }
+  .principle-banner h2 { color: #333 !important; }
+  .principle-banner .hierarchy, .principle-banner .hierarchy span { color: #000 !important; }
+  .principle-banner p { color: #444 !important; }
+  .section { break-inside: avoid; box-shadow: none; border: 1px solid #ccc; }
+  .section, .section[open] { break-inside: auto; }
+  .section summary::before { display: none; }
+  .section-body { display: block !important; }
+  details[open] .section-body, details .section-body { display: block !important; }
+  details > .section-body { display: block !important; }
+  .checklist input[type="checkbox"] { appearance: auto; -webkit-appearance: auto; }
+  body { font-size: 11pt; padding: 0; }
+  .container { max-width: 100%; padding: 0; }
+}
+
+/* ── Responsive ── */
+@media (max-width: 480px) {
+  .site-header { padding: 0.6rem 0.75rem; }
+  .container { padding: 0.75rem; }
+  .section summary { padding: 0.85rem 1rem; font-size: 0.92rem; }
+  .section-body { padding: 0 1rem 1rem; }
+  table { font-size: 0.78rem; }
+}
+@media (min-width: 768px) {
+  .site-header { padding: 0.85rem 1.5rem; }
+  .site-header h1 { font-size: 1.1rem; }
+  .container { padding: 1.5rem; }
+  .principle-banner { padding: 1.5rem; }
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <h1>Interim Facilities Director</h1>
+  <div class="subtitle">First 30 Days Action Plan</div>
+  <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
+  <div class="progress-label" id="progressLabel">0 of 0 tasks</div>
+</header>
+
+<main class="container">
+
+  <!-- Governing Principle -->
+  <div class="principle-banner">
+    <h2>Your Governing Principle</h2>
+    <div class="hierarchy">
+      Life Safety <span>&rsaquo;</span> Code Compliance <span>&rsaquo;</span> Asset Preservation <span>&rsaquo;</span> Occupant Comfort <span>&rsaquo;</span> Aesthetics
+    </div>
+    <p>A wobbly handrail gets fixed before a stained ceiling tile. A fire extinguisher inspection takes priority over repainting a hallway. Keep this hierarchy in mind for every decision.</p>
+  </div>
+
+  <!-- Controls -->
+  <div class="controls">
+    <button onclick="toggleAll(true)">Expand all</button>
+    <button onclick="toggleAll(false)">Collapse all</button>
+  </div>
+
+  <!-- ═══ FLINT'S QUESTIONS ═══ -->
+  <details class="section" id="sec-questions">
+    <summary>Flint's Questions for You <span class="badge">Pre-work</span></summary>
+    <div class="section-body">
+      <div class="subsection">
+        <p>Before getting specific to BCEC, answer these when you can:</p>
+        <ol class="questions-list">
+          <li>How big is the building (approx. sq ft) and how old is it?</li>
+          <li>One building or a campus (multiple buildings, parking lots, outdoor spaces)?</li>
+          <li>Is anyone currently handling day-to-day maintenance &mdash; a janitor, handyman, facilities committee?</li>
+          <li>Do you have a commercial HVAC system, commercial kitchen, elevator, or fire sprinkler system? (These are regulated systems with mandatory inspections.)</li>
+          <li>Any recent construction, renovation, or major repair? (Active projects, warranties, permits to finalize?)</li>
+        </ol>
+      </div>
+    </div>
+  </details>
+
+  <!-- ═══ WEEK 1 ═══ -->
+  <details class="section" id="sec-week1" open>
+    <summary>Week 1: Get Your Bearings <span class="badge">Days 1-5</span></summary>
+    <div class="section-body">
+      <p style="font-size:0.85rem;color:var(--text-secondary);margin-bottom:1rem;">Know what you have, know what's broken right now, and know who to call.</p>
+
+      <!-- Days 1-2 -->
+      <div class="subsection">
+        <h3>Days 1-2: The Critical Document Hunt</h3>
+        <p>Find these documents. They may be in a filing cabinet, on someone's computer, in a church office, or they may not exist. Knowing which ones are <em>missing</em> is just as important.</p>
+        <ul class="checklist" data-group="docs">
+          <li><input type="checkbox" data-key="docs-0"><span>Building keys and access codes &mdash; get a full set. Were the previous director's keys collected?</span></li>
+          <li><input type="checkbox" data-key="docs-1"><span>The vendor/contractor list &mdash; who does the church call when HVAC breaks, toilet won't stop, roof leaks? This is gold. If it doesn't exist, building it is your top Week 2 priority.</span></li>
+          <li><input type="checkbox" data-key="docs-2"><span>Insurance certificate (property insurance) &mdash; what's covered, when does it renew?</span></li>
+          <li><input type="checkbox" data-key="docs-3"><span>Most recent fire inspection report &mdash; were there violations? Were they corrected?</span></li>
+          <li><input type="checkbox" data-key="docs-4"><span>Any existing maintenance logs or work order history &mdash; even a notebook or spreadsheet</span></li>
+          <li><input type="checkbox" data-key="docs-5"><span>The facilities budget &mdash; what was budgeted this year? What's been spent? If no one can produce this, that's a finding in itself.</span></li>
+          <li><input type="checkbox" data-key="docs-6"><span>Certificates of occupancy, building permits for recent work, elevator inspection certificates (if applicable), backflow preventer test reports, fire alarm monitoring contracts</span></li>
+        </ul>
+        <div class="callout"><strong>If you can only find one thing, find the vendor list.</strong> When something breaks at 10pm on Saturday before a Sunday service, you need phone numbers.</div>
+      </div>
+
+      <!-- Days 2-3 -->
+      <div class="subsection">
+        <h3>Days 2-3: The Building Walk-Through</h3>
+        <p>Walk every room, hallway, closet, the roof (if safe), parking lot, mechanical rooms. Bring your phone for photos and notes.</p>
+
+        <h4>Life Safety Items (fix immediately if found)</h4>
+        <ul class="checklist" data-group="safety">
+          <li><input type="checkbox" data-key="safety-0"><span>Exit signs &mdash; are they lit? Do they point the right direction?</span></li>
+          <li><input type="checkbox" data-key="safety-1"><span>Emergency lighting &mdash; press the test button on battery-backup lights. Do they come on?</span></li>
+          <li><input type="checkbox" data-key="safety-2"><span>Fire extinguishers &mdash; present, visible, current inspection tags? (Annual inspection; tag has a date and punch mark.)</span></li>
+          <li><input type="checkbox" data-key="safety-3"><span>Tripping hazards &mdash; torn carpet, uneven thresholds, cracked sidewalks</span></li>
+          <li><input type="checkbox" data-key="safety-4"><span>Blocked exits &mdash; doors chained shut, storage in front of exits. THIS IS A CODE VIOLATION. Fix today, not tomorrow.</span></li>
+          <li><input type="checkbox" data-key="safety-5"><span>Handrails &mdash; loose? Missing where there are stairs?</span></li>
+          <li><input type="checkbox" data-key="safety-6"><span>Visible mold, standing water, or active leaks</span></li>
+          <li><input type="checkbox" data-key="safety-7"><span>Electrical panels &mdash; accessible (no storage within 3 feet)? Breakers labeled?</span></li>
+        </ul>
+
+        <h4>Building Condition Items (note but don't panic)</h4>
+        <ul class="checklist" data-group="condition">
+          <li><input type="checkbox" data-key="cond-0"><span>Roof &mdash; visible ponding water, damaged flashing, missing shingles?</span></li>
+          <li><input type="checkbox" data-key="cond-1"><span>Walls and ceilings &mdash; water stains (past or active leaks), cracks, peeling paint</span></li>
+          <li><input type="checkbox" data-key="cond-2"><span>Restrooms &mdash; leaking fixtures, running toilets, proper ventilation</span></li>
+          <li><input type="checkbox" data-key="cond-3"><span>HVAC &mdash; is the building comfortable? Thermostats working? Unusual noises?</span></li>
+          <li><input type="checkbox" data-key="cond-4"><span>Parking lot &mdash; potholes, faded striping, ADA-compliant accessible spaces with proper signage?</span></li>
+          <li><input type="checkbox" data-key="cond-5"><span>Exterior &mdash; drainage (water should flow away from foundation), sidewalk condition, exterior lighting</span></li>
+        </ul>
+
+        <h4>Mechanical / Utility Rooms</h4>
+        <ul class="checklist" data-group="mech">
+          <li><input type="checkbox" data-key="mech-0"><span>HVAC equipment &mdash; note brand and model numbers, photo the nameplates</span></li>
+          <li><input type="checkbox" data-key="mech-1"><span>Water heater(s) &mdash; photo nameplates</span></li>
+          <li><input type="checkbox" data-key="mech-2"><span>Electrical panels &mdash; main and sub-panels. Labeled?</span></li>
+          <li><input type="checkbox" data-key="mech-3"><span>Fire alarm panel &mdash; display says "Normal"? Anything else needs attention.</span></li>
+          <li><input type="checkbox" data-key="mech-4"><span>Sprinkler system (if present) &mdash; find main riser and control valves. Valves open? Test/inspection tag present?</span></li>
+        </ul>
+
+        <div class="callout">Take photos of <strong>everything</strong>.</div>
+      </div>
+
+      <!-- Days 3-5 -->
+      <div class="subsection">
+        <h3>Days 3-5: The People Interviews</h3>
+
+        <div class="interview-block">
+          <div class="role">Church administrator or office manager</div>
+          <ul>
+            <li>What facilities problems do people complain about most?</li>
+            <li>Who has been handling maintenance requests? How do they come in?</li>
+            <li>Any upcoming events that need special setup or have facilities implications?</li>
+            <li>What's the building schedule &mdash; who uses the building and when?</li>
+            <li>Is there a facilities budget I can see?</li>
+          </ul>
+        </div>
+
+        <div class="interview-block">
+          <div class="role">Custodian / janitor (if there is one)</div>
+          <ul>
+            <li>What's broken right now that you've been working around?</li>
+            <li>What do you wish someone would fix?</li>
+            <li>Where do you get your supplies? Is there a budget for that?</li>
+            <li>Are there areas of the building that worry you?</li>
+          </ul>
+          <div class="note">This person is your most valuable source of ground truth.</div>
+        </div>
+
+        <div class="interview-block">
+          <div class="role">Long-time volunteer who helps with facilities ("the building guy")</div>
+          <ul>
+            <li>What's the history of this building? Known problem areas?</li>
+            <li>What major repairs in the last few years?</li>
+            <li>What have you been wanting to do but haven't had budget/approval for?</li>
+            <li>Who are the good contractors you've worked with?</li>
+          </ul>
+          <div class="note">Every church has one. Find them. Buy them coffee.</div>
+        </div>
+
+        <div class="interview-block">
+          <div class="role">Senior pastor or executive leadership</div>
+          <ul>
+            <li>What are your expectations for me in this interim role?</li>
+            <li>What are the top three facilities issues from your perspective?</li>
+            <li>Are there any capital projects planned or being discussed?</li>
+            <li>What's the approval process for spending &mdash; what can I authorize, what needs sign-off?</li>
+          </ul>
+          <div class="note">This conversation sets your scope.</div>
+        </div>
+      </div>
+    </div>
+  </details>
+
+  <!-- ═══ WEEKS 2-3 ═══ -->
+  <details class="section" id="sec-week23">
+    <summary>Weeks 2-3: Deeper Assessment <span class="badge">Days 8-21</span></summary>
+    <div class="section-body">
+
+      <div class="subsection">
+        <h3>Compliance & Inspection Status</h3>
+        <p>Build a table: System | Last Inspection | Inspector/Vendor | Result | Next Due Date</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>System</th><th>Typical Inspection Cycle</th></tr></thead>
+            <tbody>
+              <tr><td>Fire alarm system</td><td>Annual (licensed fire alarm company)</td></tr>
+              <tr><td>Fire sprinkler system</td><td>Annual (licensed sprinkler company)</td></tr>
+              <tr><td>Fire extinguishers</td><td>Annual (fire extinguisher service company)</td></tr>
+              <tr><td>Backflow preventer(s)</td><td>Annual (required by water utility)</td></tr>
+              <tr><td>Elevator (if present)</td><td>Annual (state or licensed inspector)</td></tr>
+              <tr><td>Kitchen hood/suppression</td><td>Semi-annual (licensed company)</td></tr>
+              <tr><td>HVAC (commercial)</td><td>Quarterly or semi-annual service contract</td></tr>
+              <tr><td>Boiler (if present)</td><td>Annual (varies by jurisdiction)</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout">If any are overdue, schedule them now. Fire alarm and sprinkler inspections being lapsed is a <strong>serious compliance gap</strong>.</div>
+      </div>
+
+      <div class="subsection">
+        <h3>Vendor Relationships</h3>
+        <p>For each key vendor, make contact:</p>
+        <ul class="checklist" data-group="vendor-intro">
+          <li><input type="checkbox" data-key="vi-0"><span>Introduce yourself as the new interim facilities director</span></li>
+          <li><input type="checkbox" data-key="vi-1"><span>Confirm account is in good standing</span></li>
+          <li><input type="checkbox" data-key="vi-2"><span>Ask about outstanding proposals, open work orders, or overdue services</span></li>
+          <li><input type="checkbox" data-key="vi-3"><span>Ask about contract terms &mdash; what's covered, response time, renewal date</span></li>
+        </ul>
+
+        <h4>Key vendors to identify/verify</h4>
+        <ul class="checklist" data-group="vendors">
+          <li><input type="checkbox" data-key="v-0"><span>HVAC contractor</span></li>
+          <li><input type="checkbox" data-key="v-1"><span>Plumber</span></li>
+          <li><input type="checkbox" data-key="v-2"><span>Electrician</span></li>
+          <li><input type="checkbox" data-key="v-3"><span>Fire alarm / sprinkler company</span></li>
+          <li><input type="checkbox" data-key="v-4"><span>Locksmith</span></li>
+          <li><input type="checkbox" data-key="v-5"><span>Pest control</span></li>
+          <li><input type="checkbox" data-key="v-6"><span>Landscaping / snow removal</span></li>
+          <li><input type="checkbox" data-key="v-7"><span>Janitorial supply vendor</span></li>
+          <li><input type="checkbox" data-key="v-8"><span>General handyman or general contractor</span></li>
+          <li><input type="checkbox" data-key="v-9"><span>Roofing contractor</span></li>
+          <li><input type="checkbox" data-key="v-10"><span>Elevator company (if applicable)</span></li>
+        </ul>
+      </div>
+
+      <div class="subsection">
+        <h3>Budget Reality Check</h3>
+        <ul class="checklist" data-group="budget">
+          <li><input type="checkbox" data-key="b-0"><span>What's the annual facilities/maintenance budget?</span></li>
+          <li><input type="checkbox" data-key="b-1"><span>What's been spent year-to-date?</span></li>
+          <li><input type="checkbox" data-key="b-2"><span>How does this year compare to last year?</span></li>
+          <li><input type="checkbox" data-key="b-3"><span>Is there a separate capital budget for big projects?</span></li>
+          <li><input type="checkbox" data-key="b-4"><span>Are there reserves or sinking funds for major future expenses?</span></li>
+        </ul>
+        <div class="callout"><strong>Benchmark:</strong> Churches should spend about $2-4 per square foot per year on maintenance and operations (not including utilities). If the building is 20,000 sq ft and the budget is $10,000/year, that's $0.50/sq ft &mdash; the building is being starved.</div>
+      </div>
+
+      <div class="subsection">
+        <h3>Deferred Maintenance Inventory</h3>
+        <p>Start a prioritized list:</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Item</th><th>Priority</th><th>Rough Cost</th><th>Urgency</th></tr></thead>
+            <tbody>
+              <tr><td><em>Parking lot potholes</em></td><td>Safety</td><td>$2K-5K</td><td>This quarter</td></tr>
+              <tr><td><em>HVAC unit, 22 yrs old</em></td><td>Asset preservation</td><td>$15K-25K</td><td>Plan for 1-2 years</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <h3>Building Schedule & Event Impact</h3>
+        <ul class="checklist" data-group="schedule">
+          <li><input type="checkbox" data-key="s-0"><span>Get the building use calendar</span></li>
+          <li><input type="checkbox" data-key="s-1"><span>Identify most heavily used spaces</span></li>
+          <li><input type="checkbox" data-key="s-2"><span>Identify maintenance windows that don't disrupt programming</span></li>
+          <li><input type="checkbox" data-key="s-3"><span>Flag upcoming major events needing facilities support</span></li>
+        </ul>
+      </div>
+
+    </div>
+  </details>
+
+  <!-- ═══ WEEK 4 ═══ -->
+  <details class="section" id="sec-week4">
+    <summary>Week 4: Synthesize and Plan <span class="badge">Days 22-30</span></summary>
+    <div class="section-body">
+
+      <div class="subsection">
+        <h3>Write a "State of the Building" Summary</h3>
+        <p>One document. 2-3 pages. For leadership. Include:</p>
+        <ol style="font-size:0.88rem;color:var(--text-secondary);padding-left:1.25rem;">
+          <li style="margin-bottom:0.35rem;"><strong>Overall building condition</strong> &mdash; honest assessment</li>
+          <li style="margin-bottom:0.35rem;"><strong>Compliance status</strong> &mdash; are inspections current? Which need scheduling?</li>
+          <li style="margin-bottom:0.35rem;"><strong>Top 5 priorities</strong> &mdash; ranked by safety-first hierarchy, with cost estimates</li>
+          <li style="margin-bottom:0.35rem;"><strong>Budget assessment</strong> &mdash; is current budget adequate? What's the gap?</li>
+          <li style="margin-bottom:0.35rem;"><strong>Vendor status</strong> &mdash; key relationships in place? Gaps?</li>
+          <li style="margin-bottom:0.35rem;"><strong>Staffing reality</strong> &mdash; what does it take to run this building? Staff vs. volunteers vs. contractors? Sustainable?</li>
+        </ol>
+      </div>
+
+      <div class="subsection">
+        <h3>Establish an Operating Rhythm</h3>
+        <ul class="checklist" data-group="rhythm">
+          <li><input type="checkbox" data-key="r-0"><span>Set up a way to receive maintenance requests (shared email, Google Form &mdash; "tell Larry who tells someone" is not a system)</span></li>
+          <li><input type="checkbox" data-key="r-1"><span>Weekly walk-through &mdash; same day, same route, every week</span></li>
+          <li><input type="checkbox" data-key="r-2"><span>Monthly budget check &mdash; what was spent, what's coming up</span></li>
+          <li><input type="checkbox" data-key="r-3"><span>Seasonal prep checklist &mdash; what needs to happen before summer (AC), winter (heating, pipes), Easter (deep cleaning)?</span></li>
+        </ul>
+      </div>
+
+      <div class="subsection">
+        <h3>Set Expectations with Leadership</h3>
+        <p>Have the direct conversation:</p>
+        <ul style="font-size:0.88rem;color:var(--text-secondary);padding-left:1.25rem;list-style:disc;">
+          <li style="margin-bottom:0.3rem;">"Here's what I've found."</li>
+          <li style="margin-bottom:0.3rem;">"Here's what needs attention immediately."</li>
+          <li style="margin-bottom:0.3rem;">"Here's what needs budget."</li>
+          <li style="margin-bottom:0.3rem;">"Here's what a permanent facilities director should be focused on."</li>
+          <li style="margin-bottom:0.3rem;">"Here's what this role actually requires &mdash; for the hiring conversation."</li>
+        </ul>
+        <p style="font-size:0.85rem;color:var(--text-secondary);margin-top:0.75rem;">That last point connects to your hiring challenge. After 30 days in the role, you'll have real data on what the job demands, making the compensation conversation concrete.</p>
+      </div>
+
+    </div>
+  </details>
+
+  <!-- ═══ KEY PRINCIPLES ═══ -->
+  <details class="section" id="sec-principles">
+    <summary>Key Principles to Remember <span class="badge">Always</span></summary>
+    <div class="section-body">
+      <div class="principle-item">
+        <strong>Don't do the work yourself.</strong>
+        <p>Identify, prioritize, manage. Use contractors and volunteers for execution.</p>
+      </div>
+      <div class="principle-item">
+        <strong>Water is the enemy of buildings.</strong>
+        <p>Any water where it shouldn't be gets priority.</p>
+      </div>
+      <div class="principle-item">
+        <strong>Deferred maintenance is debt with interest.</strong>
+        <p>A $500 fix ignored becomes $5,000. Frame it as stewardship.</p>
+      </div>
+      <div class="principle-item">
+        <strong>Document everything.</strong>
+        <p>Photos, dates, costs, decisions. The permanent director will need this handoff.</p>
+      </div>
+      <div class="principle-item">
+        <strong>Life safety doesn't wait for budget approval.</strong>
+        <p>Fix it now, explain later. No one was ever fired for unchaining a fire exit.</p>
+      </div>
+    </div>
+  </details>
+
+  <!-- ═══ INSPECTION REFERENCE ═══ -->
+  <details class="section" id="sec-inspections">
+    <summary>Inspection Cycle Reference <span class="badge">Reference</span></summary>
+    <div class="section-body">
+      <div class="subsection">
+        <p>Quick-reference table of what gets inspected and how often:</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>System</th><th>Frequency</th><th>Who Does It</th></tr></thead>
+            <tbody>
+              <tr><td>Fire alarm</td><td>Annual</td><td>Licensed fire alarm company</td></tr>
+              <tr><td>Sprinklers</td><td>Annual</td><td>Licensed sprinkler company</td></tr>
+              <tr><td>Fire extinguishers</td><td>Annual</td><td>Fire extinguisher service</td></tr>
+              <tr><td>Backflow preventers</td><td>Annual</td><td>Required by water utility</td></tr>
+              <tr><td>Elevator</td><td>Annual</td><td>State or licensed inspector</td></tr>
+              <tr><td>Kitchen hood suppression</td><td>Semi-annual</td><td>Licensed company</td></tr>
+              <tr><td>HVAC service</td><td>Quarterly-Semi-annual</td><td>HVAC contractor</td></tr>
+              <tr><td>Boiler</td><td>Annual</td><td>Varies by jurisdiction</td></tr>
+              <tr><td>Building walk-through</td><td>Weekly</td><td>You</td></tr>
+              <tr><td>Roof inspection</td><td>Semi-annual + after storms</td><td>You or roofing contractor</td></tr>
+              <tr><td>ADA compliance review</td><td>Annual</td><td>Self-audit with checklist</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </details>
+
+  <!-- Flint CTA -->
+  <div class="callout" style="margin-top:1.5rem;">
+    <strong>Built by Flint, your Facilities Management Advisor.</strong> Update your answers to the 5 questions above and I can get much more specific to BCEC.
+  </div>
+
+  <footer class="site-footer">
+    <div>Built by Flint & Lux &mdash; Larry's AI Team</div>
+  </footer>
+
+</main>
+
+<script>
+(function() {
+  const STORAGE_KEY = 'bcec-facilities-30day';
+
+  // Load saved checkbox states
+  function loadState() {
+    try {
+      return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+    } catch(e) { return {}; }
+  }
+
+  function saveState(state) {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch(e) {}
+  }
+
+  const state = loadState();
+  const checkboxes = document.querySelectorAll('.checklist input[type="checkbox"]');
+  const total = checkboxes.length;
+
+  function updateProgress() {
+    const checked = document.querySelectorAll('.checklist input[type="checkbox"]:checked').length;
+    const pct = total > 0 ? Math.round((checked / total) * 100) : 0;
+    document.getElementById('progressBar').style.width = pct + '%';
+    document.getElementById('progressLabel').textContent = checked + ' of ' + total + ' tasks';
+  }
+
+  checkboxes.forEach(function(cb) {
+    const key = cb.getAttribute('data-key');
+    if (key && state[key]) {
+      cb.checked = true;
+      cb.closest('li').classList.add('checked');
+    }
+
+    cb.addEventListener('change', function() {
+      const k = this.getAttribute('data-key');
+      if (!k) return;
+      const s = loadState();
+      if (this.checked) {
+        s[k] = true;
+        this.closest('li').classList.add('checked');
+      } else {
+        delete s[k];
+        this.closest('li').classList.remove('checked');
+      }
+      saveState(s);
+      updateProgress();
+    });
+  });
+
+  updateProgress();
+
+  // Save section open/close state
+  const SECTION_KEY = 'bcec-facilities-sections';
+  function loadSections() {
+    try { return JSON.parse(localStorage.getItem(SECTION_KEY)) || {}; } catch(e) { return {}; }
+  }
+  function saveSections(s) {
+    try { localStorage.setItem(SECTION_KEY, JSON.stringify(s)); } catch(e) {}
+  }
+
+  const sections = document.querySelectorAll('details.section');
+  const secState = loadSections();
+
+  sections.forEach(function(det) {
+    const id = det.id;
+    if (id && secState.hasOwnProperty(id)) {
+      det.open = secState[id];
+    }
+    det.addEventListener('toggle', function() {
+      if (!id) return;
+      const ss = loadSections();
+      ss[id] = det.open;
+      saveSections(ss);
+    });
+  });
+
+  // Expand/collapse all
+  window.toggleAll = function(open) {
+    const ss = {};
+    sections.forEach(function(det) {
+      det.open = open;
+      if (det.id) ss[det.id] = open;
+    });
+    saveSections(ss);
+  };
+})();
+</script>
+
+</body>
+</html>
