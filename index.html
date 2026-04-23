@@ -360,17 +360,21 @@ tbody tr:hover { background: var(--stone-50); }
 .questions-list li {
   counter-increment: q;
   display: flex;
-  align-items: flex-start;
-  gap: 0.6rem;
-  padding: 0.5rem 0;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: 0.75rem 0;
   border-bottom: 1px solid var(--stone-100);
   font-size: 0.88rem;
   color: var(--text-secondary);
   line-height: 1.55;
 }
 .questions-list li:last-child { border-bottom: none; }
-.questions-list li::before {
-  content: counter(q);
+.question-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+}
+.question-num {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -383,6 +387,64 @@ tbody tr:hover { background: var(--stone-50); }
   font-size: 0.75rem;
   border-radius: 50%;
   margin-top: 1px;
+}
+.question-num.answered {
+  background: var(--accent);
+  color: #fff;
+}
+.question-input {
+  width: 100%;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--card-bg);
+  color: var(--text);
+  resize: vertical;
+  min-height: 2.5rem;
+  transition: border-color 0.15s;
+}
+.question-input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(180, 83, 9, 0.12);
+}
+.question-input::placeholder {
+  color: var(--stone-400);
+  font-style: italic;
+}
+/* ── Share Button ── */
+.share-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #fff;
+  background: var(--stone-800);
+  border: none;
+  padding: 0.75rem 1.25rem;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 1rem;
+  transition: all 0.15s;
+}
+.share-btn:hover { background: var(--stone-700); }
+.share-btn:active { transform: scale(0.98); }
+.share-btn.copied {
+  background: #16a34a;
+}
+.share-hint {
+  font-size: 0.75rem;
+  color: var(--stone-400);
+  text-align: center;
+  margin-top: 0.4rem;
+  font-style: italic;
 }
 
 /* ── Key Principles ── */
@@ -506,14 +568,46 @@ tbody tr:hover { background: var(--stone-50); }
     <summary>Flint's Questions for You <span class="badge">Pre-work</span></summary>
     <div class="section-body">
       <div class="subsection">
-        <p>Before getting specific to BCEC, answer these when you can:</p>
+        <p>Before getting specific to BCEC, answer these when you can. Your answers are saved automatically as you type.</p>
         <ol class="questions-list">
-          <li>How big is the building (approx. sq ft) and how old is it?</li>
-          <li>One building or a campus (multiple buildings, parking lots, outdoor spaces)?</li>
-          <li>Is anyone currently handling day-to-day maintenance &mdash; a janitor, handyman, facilities committee?</li>
-          <li>Do you have a commercial HVAC system, commercial kitchen, elevator, or fire sprinkler system? (These are regulated systems with mandatory inspections.)</li>
-          <li>Any recent construction, renovation, or major repair? (Active projects, warranties, permits to finalize?)</li>
+          <li>
+            <div class="question-label">
+              <span class="question-num" id="qnum-0">1</span>
+              <span>How big is the building (approx. sq ft) and how old is it?</span>
+            </div>
+            <textarea class="question-input" data-q="q0" placeholder="e.g., About 25,000 sq ft, built in 1985..." rows="2"></textarea>
+          </li>
+          <li>
+            <div class="question-label">
+              <span class="question-num" id="qnum-1">2</span>
+              <span>One building or a campus (multiple buildings, parking lots, outdoor spaces)?</span>
+            </div>
+            <textarea class="question-input" data-q="q1" placeholder="e.g., One main building with a parking lot and a small portable..." rows="2"></textarea>
+          </li>
+          <li>
+            <div class="question-label">
+              <span class="question-num" id="qnum-2">3</span>
+              <span>Is anyone currently handling day-to-day maintenance &mdash; a janitor, handyman, facilities committee?</span>
+            </div>
+            <textarea class="question-input" data-q="q2" placeholder="e.g., We have a part-time janitor and a few volunteers who help..." rows="2"></textarea>
+          </li>
+          <li>
+            <div class="question-label">
+              <span class="question-num" id="qnum-3">4</span>
+              <span>Do you have a commercial HVAC system, commercial kitchen, elevator, or fire sprinkler system? (These are regulated systems with mandatory inspections.)</span>
+            </div>
+            <textarea class="question-input" data-q="q3" placeholder="e.g., Commercial HVAC yes, no elevator, small kitchen but not sure if it's commercial grade..." rows="2"></textarea>
+          </li>
+          <li>
+            <div class="question-label">
+              <span class="question-num" id="qnum-4">5</span>
+              <span>Any recent construction, renovation, or major repair? (Active projects, warranties, permits to finalize?)</span>
+            </div>
+            <textarea class="question-input" data-q="q4" placeholder="e.g., We replaced the roof about 3 years ago, had some plumbing work last year..." rows="2"></textarea>
+          </li>
         </ol>
+        <button class="share-btn" id="shareBtn" onclick="copyAnswers()">Copy Answers for Larry</button>
+        <div class="share-hint">Copies your answers to clipboard — paste them into your chat with Larry</div>
       </div>
     </div>
   </details>
@@ -916,6 +1010,117 @@ tbody tr:hover { background: var(--stone-50); }
     });
     saveSections(ss);
   };
+
+  // ── Question Inputs ──
+  const Q_KEY = 'bcec-facilities-questions';
+  const questions = [
+    'How big is the building (approx. sq ft) and how old is it?',
+    'One building or a campus (multiple buildings, parking lots, outdoor spaces)?',
+    'Is anyone currently handling day-to-day maintenance?',
+    'Do you have a commercial HVAC system, commercial kitchen, elevator, or fire sprinkler system?',
+    'Any recent construction, renovation, or major repair?'
+  ];
+
+  function loadQuestions() {
+    try { return JSON.parse(localStorage.getItem(Q_KEY)) || {}; } catch(e) { return {}; }
+  }
+  function saveQuestions(q) {
+    try { localStorage.setItem(Q_KEY, JSON.stringify(q)); } catch(e) {}
+  }
+
+  function updateQuestionNums() {
+    var qState = loadQuestions();
+    for (var i = 0; i < 5; i++) {
+      var num = document.getElementById('qnum-' + i);
+      if (num) {
+        if (qState['q' + i] && qState['q' + i].trim().length > 0) {
+          num.classList.add('answered');
+        } else {
+          num.classList.remove('answered');
+        }
+      }
+    }
+  }
+
+  var qInputs = document.querySelectorAll('.question-input');
+  var qState = loadQuestions();
+  qInputs.forEach(function(input) {
+    var key = input.getAttribute('data-q');
+    if (key && qState[key]) {
+      input.value = qState[key];
+    }
+    input.addEventListener('input', function() {
+      var k = this.getAttribute('data-q');
+      if (!k) return;
+      var qs = loadQuestions();
+      qs[k] = this.value;
+      saveQuestions(qs);
+      updateQuestionNums();
+    });
+  });
+  updateQuestionNums();
+
+  // ── Copy Answers ──
+  window.copyAnswers = function() {
+    var qs = loadQuestions();
+    var hasAny = false;
+    var lines = ['## Flint\'s Questions — My Answers', ''];
+    for (var i = 0; i < 5; i++) {
+      var answer = (qs['q' + i] || '').trim();
+      lines.push('**Q' + (i + 1) + ': ' + questions[i] + '**');
+      if (answer) {
+        lines.push(answer);
+        hasAny = true;
+      } else {
+        lines.push('_(not answered yet)_');
+      }
+      lines.push('');
+    }
+
+    if (!hasAny) {
+      alert('No answers filled in yet — type your answers above first.');
+      return;
+    }
+
+    var text = lines.join('\n');
+    var btn = document.getElementById('shareBtn');
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function() {
+        btn.textContent = 'Copied!';
+        btn.classList.add('copied');
+        setTimeout(function() {
+          btn.textContent = 'Copy Answers for Larry';
+          btn.classList.remove('copied');
+        }, 2500);
+      }).catch(function() {
+        fallbackCopy(text, btn);
+      });
+    } else {
+      fallbackCopy(text, btn);
+    }
+  };
+
+  function fallbackCopy(text, btn) {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.left = '-9999px';
+    document.body.appendChild(ta);
+    ta.select();
+    try {
+      document.execCommand('copy');
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(function() {
+        btn.textContent = 'Copy Answers for Larry';
+        btn.classList.remove('copied');
+      }, 2500);
+    } catch(e) {
+      alert('Could not copy automatically. Please select and copy manually:\n\n' + text);
+    }
+    document.body.removeChild(ta);
+  }
 })();
 </script>
 
