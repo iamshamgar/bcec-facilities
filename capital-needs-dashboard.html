@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BCEC Capital Needs — Board Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --stone-50: #fafaf9;
+  --stone-100: #f5f5f4;
+  --stone-200: #e7e5e4;
+  --stone-300: #d6d3d1;
+  --stone-400: #a8a29e;
+  --stone-500: #78716c;
+  --stone-600: #57534e;
+  --stone-700: #44403c;
+  --stone-800: #292524;
+  --stone-900: #1c1917;
+  --amber-50: #fffbeb;
+  --amber-100: #fef3c7;
+  --amber-200: #fde68a;
+  --amber-400: #fbbf24;
+  --amber-500: #f59e0b;
+  --amber-600: #d97706;
+  --amber-700: #b45309;
+  --amber-800: #92400e;
+  --emerald-50: #ecfdf5;
+  --emerald-100: #d1fae5;
+  --emerald-600: #059669;
+  --emerald-700: #047857;
+  --red-50: #fef2f2;
+  --red-100: #fee2e2;
+  --red-600: #dc2626;
+  --red-700: #b91c1c;
+  --blue-50: #eff6ff;
+  --blue-100: #dbeafe;
+  --blue-600: #2563eb;
+  --blue-700: #1d4ed8;
+  --accent: #b45309;
+  --bg: #fafaf9;
+  --card-bg: #ffffff;
+  --text: #292524;
+  --text-secondary: #57534e;
+  --border: #e7e5e4;
+  --radius: 10px;
+  --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 6px rgba(0,0,0,0.05), 0 2px 4px rgba(0,0,0,0.03);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.65;
+  padding-bottom: 4rem;
+}
+
+/* ── Header ── */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--stone-800);
+  color: #fff;
+  padding: 0.85rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+.site-header h1 { font-size: 1rem; font-weight: 600; letter-spacing: -0.01em; }
+.header-meta { font-size: 0.78rem; color: var(--stone-400); }
+
+/* ── Stats strip ── */
+.stats-strip {
+  background: var(--stone-900);
+  color: #fff;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+}
+.stat-item {
+  padding: 1rem 1.25rem;
+  border-right: 1px solid rgba(255,255,255,0.07);
+  text-align: center;
+}
+.stat-item:last-child { border-right: none; }
+.stat-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #fff;
+  display: block;
+  line-height: 1.1;
+}
+.stat-value.amber { color: var(--amber-400); }
+.stat-value.red { color: #f87171; }
+.stat-value.green { color: #34d399; }
+.stat-label {
+  font-size: 0.68rem;
+  color: var(--stone-400);
+  margin-top: 0.25rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* ── Tabs ── */
+.tab-bar {
+  background: var(--card-bg);
+  border-bottom: 2px solid var(--border);
+  display: flex;
+  overflow-x: auto;
+  scrollbar-width: none;
+  position: sticky;
+  top: 53px;
+  z-index: 90;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+}
+.tab-bar::-webkit-scrollbar { display: none; }
+.tab-btn {
+  padding: 0.85rem 1.35rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 0.15s, border-color 0.15s;
+  font-family: inherit;
+}
+.tab-btn:hover { color: var(--text); }
+.tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
+
+/* ── Panels ── */
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+.container { max-width: 960px; margin: 0 auto; padding: 2rem 1.25rem; }
+
+/* ── Cards ── */
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+.card-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
+}
+
+/* ── Campus summary cards ── */
+.campus-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.75rem;
+}
+.campus-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  box-shadow: var(--shadow);
+}
+.campus-card h3 { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.2rem; }
+.campus-card .year { font-size: 0.74rem; color: var(--text-secondary); margin-bottom: 0.85rem; }
+.campus-big-num { font-size: 1.6rem; font-weight: 700; color: var(--accent); margin-bottom: 0.2rem; }
+.campus-sub { font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 0.75rem; }
+.campus-note { font-size: 0.78rem; color: var(--text-secondary); line-height: 1.5; }
+
+/* ── Reserve bar ── */
+.reserve-wrap { margin-bottom: 1.5rem; }
+.reserve-label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 0.5rem;
+  font-size: 0.85rem;
+}
+.reserve-track {
+  height: 22px;
+  background: var(--stone-200);
+  border-radius: 999px;
+  overflow: hidden;
+  margin-bottom: 0.5rem;
+  position: relative;
+}
+.reserve-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: var(--amber-500);
+  display: flex;
+  align-items: center;
+  padding-left: 0.6rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #fff;
+  width: 6.3%;
+}
+.reserve-endpoints {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.72rem;
+  color: var(--stone-400);
+  margin-bottom: 0.85rem;
+}
+.reserve-note {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* ── Tables ── */
+.tbl-wrap {
+  overflow-x: auto;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  margin-bottom: 1.5rem;
+}
+table { width: 100%; border-collapse: collapse; font-size: 0.84rem; }
+thead tr { background: var(--stone-100); }
+th {
+  padding: 0.65rem 0.9rem;
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  border-bottom: 1px solid var(--border);
+}
+td { padding: 0.65rem 0.9rem; border-bottom: 1px solid var(--stone-100); vertical-align: top; }
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: var(--stone-50); }
+.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.bold { font-weight: 600; }
+.strike { text-decoration: line-through; color: var(--stone-400); }
+tfoot td { background: var(--stone-100); font-weight: 700; border-top: 2px solid var(--border); }
+
+/* ── Badges ── */
+.badge {
+  display: inline-block;
+  padding: 0.18em 0.6em;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  white-space: nowrap;
+  line-height: 1.45;
+  letter-spacing: 0.01em;
+}
+.badge-done     { background: var(--emerald-100); color: var(--emerald-700); }
+.badge-inflight { background: var(--blue-100);    color: var(--blue-700); }
+.badge-planned  { background: var(--amber-100);   color: var(--amber-800); }
+.badge-urgent   { background: var(--red-100);     color: var(--red-700); }
+.badge-pending  { background: var(--stone-200);   color: var(--stone-600); }
+
+/* ── Decision cards ── */
+.decisions-grid { display: grid; gap: 1rem; }
+.decision-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-left-width: 4px;
+  border-radius: var(--radius);
+  padding: 1.25rem 1.5rem;
+  box-shadow: var(--shadow);
+  display: flex;
+  gap: 1.1rem;
+  align-items: flex-start;
+}
+.decision-card.resolved { border-left-color: var(--emerald-600); }
+.decision-card.action   { border-left-color: var(--red-600); }
+.decision-card.planning { border-left-color: var(--blue-600); }
+.decision-card.new-item { border-left-color: var(--amber-600); }
+.decision-num {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--stone-300);
+  min-width: 1.75rem;
+  line-height: 1;
+  padding-top: 0.1rem;
+  flex-shrink: 0;
+}
+.decision-body h3 { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.3rem; }
+.decision-body .dh { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.4rem; flex-wrap: wrap; }
+.decision-body p { font-size: 0.84rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 0.5rem; }
+.decision-detail { font-size: 0.81rem; color: var(--text-secondary); line-height: 1.55; }
+.decision-detail strong { color: var(--text); }
+
+/* ── Section titles ── */
+.section-heading { font-size: 1rem; font-weight: 700; color: var(--text); margin: 0 0 0.6rem; }
+.section-sub { font-size: 0.84rem; color: var(--text-secondary); margin-bottom: 1.25rem; line-height: 1.6; }
+
+/* ── Alert boxes ── */
+.alert {
+  padding: 0.9rem 1.1rem;
+  border-radius: 8px;
+  font-size: 0.84rem;
+  margin-bottom: 1.25rem;
+  line-height: 1.6;
+}
+.alert-amber { background: var(--amber-50);   border: 1px solid var(--amber-200);  color: var(--amber-800); }
+.alert-red   { background: var(--red-50);     border: 1px solid #fca5a5;           color: var(--red-700); }
+.alert-green { background: var(--emerald-50); border: 1px solid #6ee7b7;           color: var(--emerald-700); }
+.alert strong { font-weight: 600; }
+
+/* ── Callout boxes ── */
+.callout-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.85rem; margin-bottom: 1.35rem; }
+.callout-box { background: var(--stone-100); border-radius: 8px; padding: 1rem; }
+.callout-box .cb-label { font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-secondary); margin-bottom: 0.3rem; }
+.callout-box .cb-val { font-size: 1.2rem; font-weight: 700; color: var(--text); }
+.callout-box .cb-sub { font-size: 0.73rem; color: var(--text-secondary); margin-top: 0.12rem; }
+
+/* ── Priority markers ── */
+.pri-high { color: var(--red-700); font-weight: 600; }
+.pri-med  { color: var(--amber-700); font-weight: 500; }
+
+/* ── Footer ── */
+.page-footer {
+  margin-top: 2.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.75rem;
+  color: var(--stone-400);
+}
+
+/* ── Responsive ── */
+@media (max-width: 720px) {
+  .stats-strip { grid-template-columns: repeat(3, 1fr); }
+  .stat-item:nth-child(3) { border-right: none; }
+  .campus-grid { grid-template-columns: 1fr; }
+  .callout-grid { grid-template-columns: repeat(2, 1fr); }
+  .decision-card { flex-direction: column; gap: 0.5rem; }
+}
+@media (max-width: 480px) {
+  .stats-strip { grid-template-columns: repeat(2, 1fr); }
+  .stat-item:nth-child(2n) { border-right: none; }
+  .stat-item { border-bottom: 1px solid rgba(255,255,255,0.06); }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════ HEADER ═══════════════════════ -->
+<header class="site-header">
+  <h1>BCEC Capital Needs Summary</h1>
+  <span class="header-meta">Deacon Board &nbsp;·&nbsp; June 8, 2026</span>
+</header>
+
+<!-- ═══════════════════════ STATS ═══════════════════════ -->
+<div class="stats-strip">
+  <div class="stat-item">
+    <span class="stat-value amber">$2.03M</span>
+    <div class="stat-label">10-Year Capital Need</div>
+  </div>
+  <div class="stat-item">
+    <span class="stat-value amber">$202,868</span>
+    <div class="stat-label">Annual Reserve Target</div>
+  </div>
+  <div class="stat-item">
+    <span class="stat-value red">$12,880</span>
+    <div class="stat-label">Current Capital Budget</div>
+  </div>
+  <div class="stat-item">
+    <span class="stat-value">6</span>
+    <div class="stat-label">Active FY26 Projects</div>
+  </div>
+  <div class="stat-item">
+    <span class="stat-value red">8</span>
+    <div class="stat-label">Board Decisions Needed</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ TABS ═══════════════════════ -->
+<nav class="tab-bar" role="tablist">
+  <button class="tab-btn active" onclick="showTab(event,'overview')">Overview</button>
+  <button class="tab-btn" onclick="showTab(event,'shawmut')">120 Shawmut</button>
+  <button class="tab-btn" onclick="showTab(event,'newton')">218 Newton</button>
+  <button class="tab-btn" onclick="showTab(event,'harrison')">237 Harrison</button>
+  <button class="tab-btn" onclick="showTab(event,'decisions')">Board Decisions</button>
+  <button class="tab-btn" onclick="showTab(event,'sources')">Sources</button>
+</nav>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     OVERVIEW
+═══════════════════════════════════════════════════════ -->
+<div class="tab-panel active" id="tab-overview">
+<div class="container">
+
+  <p class="section-sub">BCEC owns three active campuses. Two were professionally assessed by EBI Consulting in August 2024, producing a combined 10-year capital need of <strong>$2.03 million</strong>. Since then, several major projects have moved to contract. Several large items remain uncontracted and unbudgeted.</p>
+
+  <!-- Reserve Gap -->
+  <div class="card">
+    <div class="card-title">Capital Reserve Funding Gap</div>
+    <div class="reserve-wrap">
+      <div class="reserve-label-row">
+        <span style="font-weight:600;">Current annual capital budget</span>
+        <span style="font-weight:700; color:var(--accent);">$12,880 / year</span>
+      </div>
+      <div class="reserve-track">
+        <div class="reserve-fill">6%</div>
+      </div>
+      <div class="reserve-endpoints">
+        <span>$0</span><span>Annual target: $202,868 / year</span>
+      </div>
+      <div class="reserve-note">
+        To steward EBI-assessed buildings responsibly, BCEC needs to contribute <strong>$202,868/year</strong> — Shawmut $77,915 + Newton $124,953. The current capital budget is <strong>6% of that target</strong>. As a benchmark: the Farina HVAC contract alone ($298k, signed 14 months after the EBI assessment) exceeded the EBI's entire 10-year HVAC reserve estimate of $151k.
+      </div>
+    </div>
+  </div>
+
+  <!-- Campus Cards -->
+  <h2 class="section-heading">Campus Snapshot</h2>
+  <div class="campus-grid">
+    <div class="campus-card">
+      <h3>120 Shawmut Ave</h3>
+      <div class="year">Built 1985 &nbsp;·&nbsp; 34,446 SF &nbsp;·&nbsp; 4 stories &nbsp;·&nbsp; Boston</div>
+      <div class="campus-big-num">$779K</div>
+      <div class="campus-sub">10-yr capital need (EBI) &nbsp;·&nbsp; Inflated: $879K</div>
+      <div class="campus-note">Dominant risk: elevator replacement ($422K, 54% of budget). HVAC contracted at $298k. Window quote ($152K) is 3.7× the EBI estimate.</div>
+    </div>
+    <div class="campus-card">
+      <h3>218 Walnut St (Newton)</h3>
+      <div class="year">Built 1895 &nbsp;·&nbsp; 35,358 SF &nbsp;·&nbsp; 3 stories &nbsp;·&nbsp; Newton</div>
+      <div class="campus-big-num">$1.25M</div>
+      <div class="campus-sub">10-yr capital need (EBI) &nbsp;·&nbsp; Inflated: $1.41M</div>
+      <div class="campus-note">Sanctuary roof completed Aug 2025. Electrical panel in-flight. Plumbing ($465K) is the largest unaddressed 10-year category across either campus.</div>
+    </div>
+    <div class="campus-card" style="border-top: 3px solid var(--amber-500);">
+      <h3>237 Harrison Ave</h3>
+      <div class="year">Auxiliary campus &nbsp;·&nbsp; No EBI assessment on file</div>
+      <div class="campus-big-num" style="color:var(--amber-700);">Unknown</div>
+      <div class="campus-sub">No professional cost estimate exists</div>
+      <div class="campus-note">HVAC, boiler, exterior painting, and structural items all flagged. An independent assessment is needed to quantify exposure.</div>
+    </div>
+  </div>
+
+  <!-- Active Projects -->
+  <h2 class="section-heading">Active FY26 Capital Projects</h2>
+  <p class="section-sub">Projects contracted, approved, or substantially in-flight as of June 2026 — real cash commitments beyond the operating budget.</p>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr>
+        <th>Property</th><th>Project</th><th class="num">Amount</th><th>Vendor</th><th>Status</th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td>120 Shawmut</td>
+          <td>HVAC rooftop unit replacement (8 units)</td>
+          <td class="num bold">$298,134<br><span style="font-weight:400;font-size:0.76rem;color:var(--text-secondary);">+ ~$48k add-ons</span></td>
+          <td>Farina Corp</td>
+          <td><span class="badge badge-inflight">In Progress</span></td>
+        </tr>
+        <tr>
+          <td>218 Walnut</td>
+          <td>Chapel HVAC</td>
+          <td class="num bold">$78k base<br><span style="font-weight:400;font-size:0.76rem;color:var(--text-secondary);">+ add-ons TBD</span></td>
+          <td>Farina Corp</td>
+          <td><span class="badge badge-inflight">In Progress</span></td>
+        </tr>
+        <tr>
+          <td>218 Walnut</td>
+          <td>Breaker / electrical panel modernization</td>
+          <td class="num bold">$47,000</td>
+          <td>Ganley Electric</td>
+          <td><span class="badge badge-inflight">In Progress</span></td>
+        </tr>
+        <tr>
+          <td>120 Shawmut</td>
+          <td>Boiler room electrical sub-panel (200A)</td>
+          <td class="num bold">~$46,000</td>
+          <td>Ganley Electric</td>
+          <td><span class="badge badge-pending">BOD approval unclear</span></td>
+        </tr>
+        <tr>
+          <td>120 Shawmut</td>
+          <td>Insurance restoration (Insurcomm)</td>
+          <td class="num bold">$124,000</td>
+          <td>Insurcomm</td>
+          <td><span class="badge badge-done">Complete Feb 2026</span></td>
+        </tr>
+        <tr>
+          <td>120 Shawmut</td>
+          <td>Generator replacement</td>
+          <td class="num bold">TBD</td>
+          <td>Vendor TBD</td>
+          <td><span class="badge badge-planned">Planning</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     120 SHAWMUT
+═══════════════════════════════════════════════════════ -->
+<div class="tab-panel" id="tab-shawmut">
+<div class="container">
+
+  <div class="callout-grid">
+    <div class="callout-box"><div class="cb-label">Built</div><div class="cb-val">1985</div><div class="cb-sub">Renovated 2015</div></div>
+    <div class="callout-box"><div class="cb-label">Size</div><div class="cb-val">34,446 SF</div><div class="cb-sub">4 stories</div></div>
+    <div class="callout-box"><div class="cb-label">Condition</div><div class="cb-val">Good–Fair</div><div class="cb-sub">EBI Aug 2024</div></div>
+    <div class="callout-box"><div class="cb-label">10-Yr Need</div><div class="cb-val">$779K</div><div class="cb-sub">Inflated: $879K</div></div>
+  </div>
+
+  <div class="alert alert-amber">
+    <strong>EBI estimates are already outdated in two categories.</strong> HVAC was contracted at $298k within 14 months (EBI estimated $151k over 10 yr). A window quote for 77 units came in at $152k (EBI estimated $41k). Actual capital exposure at 120 SH is higher than the EBI baseline suggests.
+  </div>
+
+  <h2 class="section-heading">EBI Capital Needs Assessment — Aug 2024</h2>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr>
+        <th>Category</th><th class="num">Immediate</th><th class="num">Short-Term</th><th class="num">10-Year</th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>Elevators</strong></td>
+          <td class="num">—</td><td class="num">—</td>
+          <td class="num bold">$422,445</td>
+        </tr>
+        <tr>
+          <td>HVAC &nbsp;<span class="badge badge-inflight">Contracted $298k+</span></td>
+          <td class="num">—</td><td class="num">—</td>
+          <td class="num strike">$151,091</td>
+        </tr>
+        <tr>
+          <td>Facades</td>
+          <td class="num">—</td><td class="num">—</td><td class="num">$53,679</td>
+        </tr>
+        <tr>
+          <td>Interior Finishes</td>
+          <td class="num">—</td><td class="num">—</td><td class="num">$50,861</td>
+        </tr>
+        <tr>
+          <td>Windows &amp; Doors &nbsp;<span class="badge badge-planned">$152k quoted</span></td>
+          <td class="num">—</td><td class="num">—</td>
+          <td class="num strike">$41,502</td>
+        </tr>
+        <tr><td>Plumbing</td><td class="num">—</td><td class="num">—</td><td class="num">$21,253</td></tr>
+        <tr><td>Site Amenities</td><td class="num">—</td><td class="num">—</td><td class="num">$16,272</td></tr>
+        <tr><td>Pavement &amp; Parking</td><td class="num">—</td><td class="num">$5,552</td><td class="num">$12,027</td></tr>
+        <tr><td>Electrical</td><td class="num">$2,347</td><td class="num">—</td><td class="num">$7,042</td></tr>
+        <tr><td>Landscaping</td><td class="num">—</td><td class="num">$7,772</td><td class="num">$2,981</td></tr>
+        <tr><td>Roofing</td><td class="num">$1,200</td><td class="num">—</td><td class="num">—</td></tr>
+      </tbody>
+      <tfoot><tr><td>TOTALS</td><td class="num">$3,547</td><td class="num">$13,324</td><td class="num">$779,152</td></tr></tfoot>
+    </table>
+  </div>
+
+  <h2 class="section-heading">Open Items — Not Yet Contracted</h2>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Item</th><th>Quote / Est.</th><th>EBI Estimate</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>Generator replacement</td>
+          <td>TBD — fire engineer report Feb 2026; $228k FY budget is a pre-report placeholder</td>
+          <td class="num">—</td>
+          <td><span class="badge badge-urgent">Vendor decision needed</span></td>
+        </tr>
+        <tr>
+          <td>Window replacement (77 units, 2nd/3rd fl. back)</td>
+          <td class="bold">$152,000 (Hi Tech Window, Aug 2025)</td>
+          <td class="num strike">$41,502</td>
+          <td><span class="badge badge-planned">Quote; no contract</span></td>
+        </tr>
+        <tr>
+          <td>Elevator overhaul</td>
+          <td>—</td>
+          <td class="num bold">$422,445</td>
+          <td><span class="badge badge-pending">Not in planning</span></td>
+        </tr>
+        <tr>
+          <td>Boiler replacement</td>
+          <td>TBD</td>
+          <td class="num">Incl. in HVAC</td>
+          <td><span class="badge badge-pending">Flagged; no bids</span></td>
+        </tr>
+        <tr>
+          <td>Boiler room electrical sub-panel (200A)</td>
+          <td>~$46,000 (Ganley estimate, Dec 2025)</td>
+          <td class="num">—</td>
+          <td><span class="badge badge-pending">BOD approval unclear</span></td>
+        </tr>
+        <tr>
+          <td>Masonry restoration / replacement</td>
+          <td>$17,900–$84,900 (Big Ticket 2024)</td>
+          <td class="num">—</td>
+          <td><span class="badge badge-pending">Budgeted 2024; not executed</span></td>
+        </tr>
+        <tr>
+          <td>Exterior/interior signage</td>
+          <td>$10,000 (FY26 budget)</td>
+          <td class="num">—</td>
+          <td><span class="badge badge-planned">In coordination</span></td>
+        </tr>
+        <tr>
+          <td>BERDO compliance filing</td>
+          <td>Staff time only</td>
+          <td class="num">—</td>
+          <td><span class="badge badge-urgent">Assign owner now</span></td>
+        </tr>
+        <tr>
+          <td>Fire escape certification</td>
+          <td>TBD</td>
+          <td class="num">—</td>
+          <td><span class="badge badge-planned">Deadline 2027</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     218 NEWTON
+═══════════════════════════════════════════════════════ -->
+<div class="tab-panel" id="tab-newton">
+<div class="container">
+
+  <div class="callout-grid">
+    <div class="callout-box"><div class="cb-label">Built</div><div class="cb-val">1895</div><div class="cb-sub">Renovated 2024</div></div>
+    <div class="callout-box"><div class="cb-label">Size</div><div class="cb-val">35,358 SF</div><div class="cb-sub">3 stories</div></div>
+    <div class="callout-box"><div class="cb-label">Condition</div><div class="cb-val">Good–Fair</div><div class="cb-sub">EBI Aug 2024</div></div>
+    <div class="callout-box"><div class="cb-label">10-Yr Need</div><div class="cb-val">$1.25M</div><div class="cb-sub">Inflated: $1.41M</div></div>
+  </div>
+
+  <div class="alert alert-green">
+    <strong>Newton sanctuary roof — resolved.</strong> The EBI's largest immediate repair ($106,400) was completed by August 2025. Dennis Chin confirmed "ALL SET" on Aug 12, 2025. No final invoice or vendor name on file — confirm cost for records.
+  </div>
+
+  <div class="alert alert-red">
+    <strong>Newton is more capital-intensive than Shawmut per square foot</strong> — $4.18/SF vs. $2.14/SF over 10 years, reflecting 1895 construction. Plumbing alone ($464,660) is the largest single unaddressed category across either campus and is not yet in planning.
+  </div>
+
+  <h2 class="section-heading">EBI Capital Needs Assessment — Aug 2024 (with Current Status)</h2>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr>
+        <th>Category</th><th class="num">Immediate</th><th class="num">Short-Term</th><th class="num">10-Year</th><th>Current Status</th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td>Plumbing</td>
+          <td class="num">—</td><td class="num">—</td><td class="num bold">$464,660</td>
+          <td><span class="badge badge-pending">Not in planning</span></td>
+        </tr>
+        <tr>
+          <td>HVAC</td>
+          <td class="num">—</td><td class="num">—</td><td class="num bold">$385,725</td>
+          <td><span class="badge badge-inflight">Chapel HVAC $78k in progress</span></td>
+        </tr>
+        <tr>
+          <td>Elevators</td>
+          <td class="num">—</td><td class="num">—</td><td class="num bold">$211,222</td>
+          <td><span class="badge badge-planned">One bid ~$160k; no decision</span></td>
+        </tr>
+        <tr>
+          <td>Interior Finishes</td>
+          <td class="num">—</td><td class="num">—</td><td class="num">$76,711</td>
+          <td><span class="badge badge-pending">Not in planning</span></td>
+        </tr>
+        <tr>
+          <td>Facades</td>
+          <td class="num">$3,756</td><td class="num">$9,000</td><td class="num">$50,460</td>
+          <td><span class="badge badge-pending">Ongoing piecemeal</span></td>
+        </tr>
+        <tr><td>Site Amenities</td><td class="num">—</td><td class="num">—</td><td class="num">$16,893</td><td>—</td></tr>
+        <tr><td>Landscaping</td><td class="num">—</td><td class="num">—</td><td class="num">$10,100</td><td>—</td></tr>
+        <tr>
+          <td>Roofing</td>
+          <td class="num strike">$106,400</td><td class="num">—</td><td class="num">$10,143</td>
+          <td><span class="badge badge-done">Completed Aug 2025</span></td>
+        </tr>
+        <tr><td>Pavement &amp; Parking</td><td class="num">—</td><td class="num">$5,663</td><td class="num">$8,877</td><td>—</td></tr>
+        <tr><td>Windows &amp; Doors</td><td class="num">—</td><td class="num">$2,100</td><td class="num">$7,700</td><td>—</td></tr>
+        <tr>
+          <td>Electrical</td>
+          <td class="num">$10,289</td><td class="num">—</td><td class="num">$7,042</td>
+          <td><span class="badge badge-inflight">$47k panel in-flight</span></td>
+        </tr>
+      </tbody>
+      <tfoot><tr><td>TOTALS</td><td class="num">$120,445</td><td class="num">$16,763</td><td class="num">$1,249,534</td><td></td></tr></tfoot>
+    </table>
+  </div>
+
+  <h2 class="section-heading">Open Items — Not Yet Contracted</h2>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Item</th><th>Quote / Est.</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>Elevator modernization</td>
+          <td>~$160k (one bid Oct 2025); Embree declined; Keystone pending</td>
+          <td><span class="badge badge-urgent">Vendor decision needed</span></td>
+        </tr>
+        <tr>
+          <td>Boiler replacement (steam → forced hot water)</td>
+          <td>TBD — Farina inspecting Mar 2026</td>
+          <td><span class="badge badge-planned">Flagged; under review</span></td>
+        </tr>
+        <tr>
+          <td>Plumbing system (10-year)</td>
+          <td>$464,660 (EBI estimate)</td>
+          <td><span class="badge badge-pending">Not in planning</span></td>
+        </tr>
+        <tr>
+          <td>Interior painting (conf. rm, stairs, restrooms)</td>
+          <td>~$7k (All Pro Paint)</td>
+          <td><span class="badge badge-planned">Planned; FY25.26 line</span></td>
+        </tr>
+        <tr>
+          <td>Kitchen soundproof exhaust</td>
+          <td>TBD (New England Soundproofing)</td>
+          <td><span class="badge badge-planned">Estimate pending</span></td>
+        </tr>
+        <tr>
+          <td>Sanctuary Lift (Garaventa) replacement</td>
+          <td>TBD — end-of-life; repaired summer 2025</td>
+          <td><span class="badge badge-urgent">Accessibility risk</span></td>
+        </tr>
+        <tr>
+          <td>Baptism discharge pump</td>
+          <td>TBD — commercial sump pump option</td>
+          <td><span class="badge badge-pending">Under consideration</span></td>
+        </tr>
+        <tr>
+          <td>BERDO compliance filing</td>
+          <td>Staff time — <strong>Newton deadline Sept 2026</strong></td>
+          <td><span class="badge badge-urgent">Assign owner now</span></td>
+        </tr>
+        <tr>
+          <td>Fire escape certification</td>
+          <td>TBD</td>
+          <td><span class="badge badge-planned">Deadline 2027</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     237 HARRISON
+═══════════════════════════════════════════════════════ -->
+<div class="tab-panel" id="tab-harrison">
+<div class="container">
+
+  <div class="alert alert-amber">
+    <strong>237 Harrison was not included in the EBI 2024 assessments.</strong> All information below comes from Dennis Chin's internal Long Term Projects list and Big Ticket estimates (2024). Capital exposure is unquantified. An independent professional assessment is the first step before any major decisions can be made.
+  </div>
+
+  <h2 class="section-heading">Dennis's Priority Items</h2>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Item</th><th>Priority</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td>HVAC / AC replacement</td><td><span class="pri-high">High</span></td><td>"Old and needs replacement"</td></tr>
+        <tr><td>Gutter / downspout reconnection</td><td><span class="pri-high">High</span></td><td>Reconnect or replace</td></tr>
+        <tr><td>Exterior painting</td><td><span class="pri-high">High</span></td><td>Paint entire building</td></tr>
+        <tr><td>Wood frame — street level &amp; above</td><td><span class="pri-high">High</span></td><td>New Century Construction (Edmund) flagged</td></tr>
+        <tr><td>Lower door</td><td><span class="pri-med">Medium</span></td><td>Needs attention</td></tr>
+        <tr><td>Lower window cracked</td><td><span class="pri-med">Medium</span></td><td>Replace</td></tr>
+        <tr><td>Lower cement cracks</td><td><span class="pri-med">Medium</span></td><td>—</td></tr>
+        <tr><td>Boiler replacement</td><td>—</td><td>No cost estimate</td></tr>
+        <tr><td>Condensers — all floors (4)</td><td>—</td><td>No cost estimate</td></tr>
+        <tr><td>Fire escape certification</td><td>—</td><td>Due 2027</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Recommended Action</div>
+    <p style="font-size:0.88rem;color:var(--text-secondary);line-height:1.65;">Commission an independent Capital Needs Assessment for 237 Harrison equivalent to the EBI reports done for 120 Shawmut and 218 Newton. Without professional cost estimates, the Deacon Board cannot quantify this building's exposure or make informed reserve or repair decisions. HVAC, boiler, and structural items all appear near-term but have no dollar figures attached.</p>
+  </div>
+
+</div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     BOARD DECISIONS
+═══════════════════════════════════════════════════════ -->
+<div class="tab-panel" id="tab-decisions">
+<div class="container">
+
+  <p class="section-sub">Eight items require Deacon Board attention, ranging from active financial decisions to compliance assignments. Color bar on left indicates type: <span style="display:inline-block;width:10px;height:10px;background:var(--emerald-600);border-radius:2px;vertical-align:middle;"></span> Resolved &nbsp; <span style="display:inline-block;width:10px;height:10px;background:var(--red-600);border-radius:2px;vertical-align:middle;"></span> Action needed &nbsp; <span style="display:inline-block;width:10px;height:10px;background:var(--blue-600);border-radius:2px;vertical-align:middle;"></span> In planning &nbsp; <span style="display:inline-block;width:10px;height:10px;background:var(--amber-600);border-radius:2px;vertical-align:middle;"></span> New item</p>
+
+  <div class="decisions-grid">
+
+    <div class="decision-card planning">
+      <div class="decision-num">1</div>
+      <div class="decision-body">
+        <div class="dh"><h3>Capital Reserve Fund</h3><span class="badge badge-inflight">Ongoing</span></div>
+        <p>Annual reserve contributions needed: <strong>$202,868/year</strong> (Shawmut $77,915 + Newton $124,953). Current budget: <strong>$12,880/year — 6% of the target</strong>. The Farina HVAC contract alone exceeded the EBI's entire 10-year HVAC estimate, showing that real costs outpace reserve assumptions.</p>
+        <div class="decision-detail">Recommendation: authorize a structured capital reserve as a separate budget line. Even $50k–$75k/year would materially reduce deferred maintenance risk over time.</div>
+      </div>
+    </div>
+
+    <div class="decision-card resolved">
+      <div class="decision-num">2</div>
+      <div class="decision-body">
+        <div class="dh"><h3>Newton Sanctuary Roof</h3><span class="badge badge-done">Resolved</span></div>
+        <p>The EBI's largest immediate repair ($106,400) was completed by August 2025. Dennis confirmed "ALL SET" Aug 12, 2025. This item is closed.</p>
+        <div class="decision-detail"><strong>Remaining action:</strong> Obtain final invoice and vendor name for records. Confirm city stop-work order (National Registry of Historic Places) was formally lifted before work resumed.</div>
+      </div>
+    </div>
+
+    <div class="decision-card action">
+      <div class="decision-num">3</div>
+      <div class="decision-body">
+        <div class="dh"><h3>Commission 237 Harrison Assessment</h3><span class="badge badge-urgent">Action needed</span></div>
+        <p>237 Harrison has no professional Capital Needs Assessment on file. HVAC, boiler, and structural/envelope items are flagged with no cost estimates. Capital exposure is unknown.</p>
+        <div class="decision-detail">Authorize an independent CNA equivalent to the EBI reports done for the other two campuses. Without it, the board is making reserve and repair decisions without a complete picture.</div>
+      </div>
+    </div>
+
+    <div class="decision-card planning">
+      <div class="decision-num">4</div>
+      <div class="decision-body">
+        <div class="dh"><h3>Elevator Planning — $582k–$633k combined</h3><span class="badge badge-inflight">In planning</span></div>
+        <p><strong>218 Newton:</strong> One bid received (~$160k); Embree Elevator declined; Keystone Elevator pending as of Oct 2025. A vendor decision is needed to keep this moving.<br><strong>120 Shawmut:</strong> $422,445 per EBI (54% of Shawmut's 10-yr budget). No bids in planning.</p>
+        <div class="decision-detail">Elevator work requires long lead times and regulatory coordination. Starting the Shawmut conversation now — even for work 5–7 years out — allows time to save, plan, and select a path (modernization vs. full replacement).</div>
+      </div>
+    </div>
+
+    <div class="decision-card action">
+      <div class="decision-num">5</div>
+      <div class="decision-body">
+        <div class="dh"><h3>Window Replacement at 120 SH — $152k</h3><span class="badge badge-urgent">Authorize or defer?</span></div>
+        <p>EBI estimated $41,502 for windows/doors over 10 years. Actual contractor quote (Hi Tech Window, Aug 2025) for 77 compromised 2nd/3rd floor windows: <strong>$152,000 — 3.7× the EBI estimate</strong>.</p>
+        <div class="decision-detail">Dennis recommended including in the FY26 budget. No contract has been awarded. Board should authorize or formally defer.</div>
+      </div>
+    </div>
+
+    <div class="decision-card action">
+      <div class="decision-num">6</div>
+      <div class="decision-body">
+        <div class="dh"><h3>Generator Replacement — Vendor Selection</h3><span class="badge badge-urgent">Decision needed</span></div>
+        <p>Fire engineer report (Ronald Horn + Nardone Electric) on generator options was delivered to Andy Te, Thomas Lee, and Enoch in February 2026. No vendor or fuel type (gas vs. diesel) has been selected.</p>
+        <div class="decision-detail"><strong>Note:</strong> BFD coordination is required for a gas option. The $228k FY25.26 budget figure predates the fire engineer's report and may not reflect the current recommended scope. Board should authorize a vendor selection process based on the engineer's recommendations.</div>
+      </div>
+    </div>
+
+    <div class="decision-card action">
+      <div class="decision-num">7</div>
+      <div class="decision-body">
+        <div class="dh"><h3>BERDO Compliance — Assign Owner Before Dennis Leaves</h3><span class="badge badge-urgent">Time-sensitive</span></div>
+        <p>Building Energy Reporting &amp; Disclosure Ordinance requires annual online filing. <strong>Newton deadline: September 2026.</strong> Colby May (third-party verifier) can verify BCEC's energy data but does not do the filing — BCEC must assign a named internal owner.</p>
+        <div class="decision-detail">Missing the filing carries compliance risk. This is not a capital expenditure, but it cannot fall through during the facilities leadership transition.</div>
+      </div>
+    </div>
+
+    <div class="decision-card new-item">
+      <div class="decision-num">8</div>
+      <div class="decision-body">
+        <div class="dh"><h3>Newton Sanctuary Lift (Garaventa) — Plan Ahead</h3><span class="badge badge-planned">New item</span></div>
+        <p>The sanctuary lift — which provides stage access for mobility-impaired persons — was flagged as near end-of-life in May 2025, repaired in summer 2025, and passed state inspection in August 2025. It has a documented history of repeated repairs.</p>
+        <div class="decision-detail">No replacement cost has been quoted. Planning proactively — rather than waiting for failure — protects accessibility and avoids disrupting sanctuary events on short notice. Recommend requesting a replacement quote from Garaventa.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     SOURCES
+═══════════════════════════════════════════════════════ -->
+<div class="tab-panel" id="tab-sources">
+<div class="container">
+
+  <h2 class="section-heading">Source Documents</h2>
+  <p class="section-sub">Both EBI CNAs are marked DRAFT as of the report date. If final versions were issued, confirm whether numbers changed.</p>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Document</th><th>Coverage</th><th>Date</th></tr></thead>
+      <tbody>
+        <tr><td>EBI Consulting CNA #023218-PR</td><td>120 Shawmut Ave</td><td>August 9, 2024 (DRAFT)</td></tr>
+        <tr><td>EBI Consulting CNA #023219-PR</td><td>218 Walnut St</td><td>August 9, 2024 (DRAFT)</td></tr>
+        <tr><td>Dennis Chin — BCEC Long Term Projects 2024</td><td>120 Shawmut, 218 Walnut, 237 Harrison</td><td>2024</td></tr>
+        <tr><td>Dennis Chin — Big Ticket 2024</td><td>120 Shawmut, 218 Walnut, 237 Harrison</td><td>2024</td></tr>
+        <tr><td>Fiscal Year 25.26.xlsx — Budget planning</td><td>All campuses</td><td>FY25.26</td></tr>
+        <tr><td>Dennis Chin — Monthly operational reports</td><td>All campuses</td><td>Oct 2025–Mar 2026</td></tr>
+        <tr><td>Farina Corp — RTU replacement proposal (accepted)</td><td>120 Shawmut (HVAC, 8 units)</td><td>Oct 7, 2025</td></tr>
+        <tr><td>Ganley Electric — Estimate #2025131</td><td>120 Shawmut (boiler room panel)</td><td>Dec 18, 2025</td></tr>
+        <tr><td>BCEC capital project email thread (47 messages, Timothy So / Dennis Chin / BOD)</td><td>All campuses</td><td>Apr 8–Oct 3, 2025</td></tr>
+        <tr><td>Hi Tech Window — Window replacement quote</td><td>120 Shawmut (77 units)</td><td>Aug 2025</td></tr>
+        <tr><td>Newton Modernization bids (elevator vendors)</td><td>218 Walnut</td><td>July 2025</td></tr>
+        <tr><td>Nardone Electric / Ronald Horn — Generator options report</td><td>120 Shawmut</td><td>Feb 25, 2026</td></tr>
+        <tr><td>Andy Te — Information Transition 2026.docx</td><td>All campuses</td><td>2026</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="page-footer">
+    Prepared by BCEC Facilities Team &nbsp;·&nbsp; Original: June 2, 2026 &nbsp;·&nbsp; Updated: June 8, 2026 &nbsp;·&nbsp; For Enoch Liao / Deacon Board use
+  </div>
+
+</div>
+</div>
+
+
+<script>
+function showTab(e, name) {
+  document.querySelectorAll('.tab-panel').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  e.currentTarget.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+
+</body>
+</html>
